@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+require 'launchy'
+
+puts "\nInput your email:"
+print ">"
+email = gets.chomp
+
+user = User.new(email: email)
+user.save
+
+puts "\nWhat do you want to do?"
+puts "0. Create shortened URL"
+puts "1. Visit shortened URL"
+print ">"
+option = gets.chomp.to_i
+
+if option == 0
+
+  puts "\nType in your long url"
+  print ">"
+  long_url = gets.chomp
+
+  short_url = ShortenedUrl.create_for_user_and_long_url!(user, long_url)
+
+  ShortenedUrl.create!(user_id: user.id, long_url: long_url, short_url: short_url)
+
+  puts "\nShort url is: #{short_url.short_url}"
+  puts "Goodbye!\n\n"
+
+elsif option == 1
+
+  puts "\nType in the shortened URL"
+  print ">"
+  short_url = gets.chomp
+
+  long_url = ShortenedUrl.find_long_url(short_url)
+  long_url_string = long_url.long_url
+
+  print "\nLaunching #{long_url_string} "
+  sleep(1)
+  3.times{print "."; sleep(1)}
+
+  puts "Goodbye!"
+
+  command_line_string = "launchy #{long_url_string}"
+  system(command_line_string)
+end
