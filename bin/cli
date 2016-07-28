@@ -36,7 +36,7 @@ elsif option == 1
   long_url = ShortenedUrl.find_long_url(short_url)
   long_url_string = long_url.long_url
 
-  print "\nLaunching #{long_url_string} "
+  print "\nLaunching #{long_url_string}"
   sleep(1)
   3.times{print "."; sleep(1)}
 
